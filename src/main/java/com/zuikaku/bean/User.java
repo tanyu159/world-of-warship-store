@@ -1,7 +1,7 @@
 package com.zuikaku.bean;
 
 /*
-用户类，只用于管理员登陆
+用户类，只用于管理员登陆。
  */
 public class User {
     private String username;
