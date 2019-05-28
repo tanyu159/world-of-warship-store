@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/login/")
 public class LoginController {
-    //登陆请求
+    //登录请求
 
     //登陆成功 重定向到列表页
     @RequestMapping(value = "log",method = RequestMethod.POST)
