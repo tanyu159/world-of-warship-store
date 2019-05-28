@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zuikaku.DAO.ItemMapper">
+    <select id="selectAll" resultType="ItemInfo">
+        <!--全部查询,并按照时间排序,这个部分专门用于和数据库的交互，上面的id对应mapper中的函数名-->
+        SELECT * FROM item_info ORDER BY item_release_date
+    </select>
+
+    <select id="selectItemInfoByVo" parameterType="ItemInfoVo" resultType="ItemInfo">
+      <!--根据Vo查询，返回ItemInfo列表-->
+        SELECT *
+        FROM item_info
+        <where>
+            <!--实现查询输入栏有字时进行模糊查询-->
+            <if test="item_name!=null and item_name!=''">
+                AND item_name LIKE "%"#{item_name}"%"
+            </if>
+        </where>
+        <choose>
+            <when test="sort_rule!=null and sort_rule!=''">
+                <!--有规则，则按规则排序-->
+                ORDER BY ${sort_name} ${sort_rule}
+            </when>
+            <otherwise>
+                <!--否则就按默认规则，时间进行排序-->
+                ORDER BY item_release_date DESC
+
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="save" parameterType="ItemInfo">
+        <!--插入一条数据，注意在数据库中的顺序，从左到右-->
+        INSERT INTO item_info
+        VALUES(
+        #{item_id},
+        #{item_name},
+        #{item_tagids},
+        #{item_platform},
+        #{item_discount},
+        #{item_original_price},
+        #{item_cap_image},
+        #{item_release_date},
+        #{is_hot},
+        #{is_hot_sale},
+        #{is_specials},
+        #{is_upcoming},
+        #{is_new},
+        #{is_enable}
+        )
+    </insert>
+
+    <select id="selectItemInfoById" parameterType="String" resultType="ItemInfo">
+        <!--根据ID查询返回一条ItemInfo记录-->
+        SELECT * FROM item_info WHERE item_id=#{id}
+    </select>
+
+    <update id="update" parameterType="ItemInfo">
+        <!--更新一条记录-->
+        UPDATE item_info
+        <set>
+            <if test="item_name !=null and item_name !=''">item_name=#{item_name},</if>
+            <if test="item_tagids !=null and item_tagids !=''">item_tagids=#{item_tagids},</if>
+            <if test="item_platform !=null and item_platform !=''">item_platform=#{item_platform},</if>
+            <if test="item_discount !=null and item_discount !=''">item_discount=#{item_discount},</if>
+            <if test="item_original_price !=null and item_original_price !=''">item_original_price=#{item_original_price},</if>
+            <if test="item_cap_image !=null and item_cap_image !=''">item_cap_image=#{item_cap_image},</if>
+            <if test="item_release_date !=null and item_release_date !=''">item_release_date=#{item_release_date},</if>
+            <!--注意：以下标志位不能再加If判断为空，因为为空时传false进去，否则不能取消勾选了-->
+            is_hot=#{is_hot},
+            is_hot_sale=#{is_hot_sale},
+            is_specials=#{is_specials},
+            is_upcoming=#{is_upcoming},
+            is_new=#{is_new},
+            is_enable=#{is_enable}
+
+        </set>
+        WHERE item_id=#{item_id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        <!--根据id物理删除一条记录-->
+        DELETE FROM item_info WHERE item_id=#{id}
+    </delete>
+
+    <!--以下为关于前台页面的一些查询语句-->
+    <select id="selectItemInfoSortByIs_new" resultType="ItemInfo">
+        <!--根据新品标志位-->
+        SELECT *
+        FROM item_info
+        WHERE is_enable='1' AND is_new='1'
+        ORDER BY item_release_date DESC
+        LIMIT 0,6
+    </select>
+
+    <select id="selectItemInfoSortByIs_specials" resultType="ItemInfo">
+        <!--根据特卖标识位-->
+        SELECT *
+        FROM item_info
+        WHERE is_enable='1' AND is_specials='1'
+        ORDER BY item_release_date DESC
+        LIMIT 0,6
+    </select>
+
+    <select id="selectItemInfoSortByIs_upcoming" resultType="ItemInfo">
+        <!--根据即将上架标识位-->
+        SELECT *
+        FROM item_info
+        WHERE is_enable='1' AND is_upcoming='1'
+        ORDER BY item_release_date DESC
+        LIMIT 0,6
+    </select>
+</mapper>

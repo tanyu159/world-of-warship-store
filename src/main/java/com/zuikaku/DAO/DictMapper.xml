@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zuikaku.DAO.DictMapper">
+    <select id="selectTagName" parameterType="String" resultType="String">
+        <!--全部查询,并按照时间排序,这个部分专门用于和数据库的交互，上面的id对应mapper中的函数名-->
+        SELECT dict_item_name FROM sys_dict WHERE dict_id
+        IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectSysDictByTypeid" parameterType="String" resultType="SysDict">
+        <!--根据词典类型id获取词典对象列表-->
+        SELECT *
+        FROM sys_dict
+        WHERE dict_type_id=#{id}
+    </select>
+
+
+
+
+
+</mapper>
