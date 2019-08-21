@@ -40,7 +40,7 @@
                         </div>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href="#">当前为后台管理</a></li>
-                            <li><a href="/index">回到前台页面</a></li>
+                            <li><a href="${pageContext.request.contextPath}/index">回到前台页面</a></li>
                         </ul>
                     </div>
                 </div>

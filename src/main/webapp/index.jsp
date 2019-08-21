@@ -5,7 +5,7 @@
 <body>
 <div style="height: 100px; background-color: #3bafda; text-align: center; line-height: 100px">
     <h1>战舰世界加值舰艇热卖榜系统演示</h1>
-    <a href="/admin/items">进入系统</a>
+    <a href="${pageContext.request.contextPath}/admin/items">进入系统</a>
 </div>
 
 </body>

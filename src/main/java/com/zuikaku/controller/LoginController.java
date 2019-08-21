@@ -44,7 +44,7 @@ public class LoginController {
     public boolean IsAdmin(User user)
     {
         boolean isadmin=false;
-        if(user.getUsername().equals("谭宇")&&user.getPassword().equals("660317"))
+        if(user.getUsername().equals("zuikaku")&&user.getPassword().equals("660317"))
         {
             isadmin=true;
         }
